@@ -77,7 +77,7 @@ fi
 kill %1'''
       }
     }
-    stage('Clean-up') {
+    stage('Coverage') {
       steps {
         sh 'go test -cover -coverprofile=c.out'
         sh 'go tool cover -html=c.out -o coverage.html'
