@@ -40,14 +40,11 @@ pipeline {
         }
       }
     }
-    stage('Pre-integration tests') {
-      steps {
-        sh './auiHash &'
-      }
-    }
     stage('Integration tests') {
       steps {
         sh '''#/bin/bash
+
+./auiHash &
 
 HTTP_RESPONSE=`curl -i -H "Accept: text/plain" -H "Content-Type: text/plain" -X GET http://localhost:8008/all/String_for_testing`
 
@@ -75,12 +72,14 @@ then
 else
     echo "*** TEST FAILED!"
     exit 1
-fi'''
+fi
+
+kill %1'''
       }
     }
     stage('Clean-up') {
       steps {
-        sh 'kill %1'
+        sh 'rm auiHash'
       }
     }
   }
