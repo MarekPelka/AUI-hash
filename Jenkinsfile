@@ -59,13 +59,16 @@ EXPECTED_RESPONSE="
 40aa6fb476e83ac0a82aac3484da942a5fa417bdf376f115298cfd28b9d0093cd282fa678d8549f3624108c0a27fb7bb
 f9e6aa9514902a0362c64c9849b41bab1525d4d1732e8807de8a380015996eb6ab57e5a613845add6524f4cdd2dc5c9b8ac86343c1977eb8ae2fe150b8697771"
 
+TRIM_RESPONSE=`echo -e $HTTP_RESPONSE | tr \' \' \'\\n\' | tail -6 | xargs -n6`
+TRIM_EXPECTED_RESPONSE=`echo -e $EXPECTED_RESPONSE | tr \' \' \'\\n\' | tail -6 | xargs -n6`
+
 echo "**************************************************************************************************************************"
-echo "$HTTP_RESPONSE"
+echo "$TRIM_RESPONSE"
 echo "**************************************************************************************************************************"
-echo "$EXPECTED_RESPONSE"
+echo "$TRIM_EXPECTED_RESPONSE"
 echo "**************************************************************************************************************************"
 
-if [[ "$HTTP_RESPONSE" == *"$EXPECTED_RESPONSE"* ]]
+if [ "$TRIM_RESPONSE" == "$TRIM_EXPECTED_RESPONSE" ]
 then
     echo "TEST PASSED!"
     exit 0
