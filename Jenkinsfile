@@ -68,7 +68,7 @@ echo "**************************************************************************
 echo "$TRIM_EXPECTED_RESPONSE"
 echo "**************************************************************************************************************************"
 
-if [ "$TRIM_RESPONSE" == "$TRIM_EXPECTED_RESPONSE" ]
+if [ "$TRIM_RESPONSE" = "$TRIM_EXPECTED_RESPONSE" ]
 then
     echo "TEST PASSED!"
     exit 0
