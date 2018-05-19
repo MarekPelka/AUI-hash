@@ -47,7 +47,9 @@ pipeline {
     }
     stage('Integration tests') {
       steps {
-        sh '''HTTP_RESPONSE=`curl -i -H "Accept: text/plain" -H "Content-Type: text/plain" -X GET http://localhost:8008/all/String_for_testing`
+        sh '''#/bin/bash
+
+HTTP_RESPONSE=`curl -i -H "Accept: text/plain" -H "Content-Type: text/plain" -X GET http://localhost:8008/all/String_for_testing`
 
 EXPECTED_RESPONSE="
 1f9be8d2262152abbf9c595fe8651ce9
@@ -57,13 +59,13 @@ EXPECTED_RESPONSE="
 40aa6fb476e83ac0a82aac3484da942a5fa417bdf376f115298cfd28b9d0093cd282fa678d8549f3624108c0a27fb7bb
 f9e6aa9514902a0362c64c9849b41bab1525d4d1732e8807de8a380015996eb6ab57e5a613845add6524f4cdd2dc5c9b8ac86343c1977eb8ae2fe150b8697771"
 
-echo "*****************************"
+echo "**************************************************************************************************************************"
 echo "$HTTP_RESPONSE"
-echo "*****************************"
+echo "**************************************************************************************************************************"
 echo "$EXPECTED_RESPONSE"
-echo "*****************************"
+echo "**************************************************************************************************************************"
 
-if [[ "$HTTP_RESPONSE" == *"$EXPECTED_RESPONSE" ]]
+if [[ "$HTTP_RESPONSE" == *"$EXPECTED_RESPONSE"* ]]
 then
     echo "TEST PASSED!"
     exit 0
