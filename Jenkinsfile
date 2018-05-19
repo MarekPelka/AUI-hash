@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'go build'
+        sh 'CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o auiHash .'
       }
     }
     stage('Unit tests') {
@@ -38,6 +38,44 @@ pipeline {
             sh 'go test -run SHA512'
           }
         }
+      }
+    }
+    stage('Pre-integration tests') {
+      steps {
+        sh './auiHash &'
+      }
+    }
+    stage('Integration tests') {
+      steps {
+        sh '''HTTP_RESPONSE=`curl -i -H "Accept: text/plain" -H "Content-Type: text/plain" -X GET http://localhost:8008/all/String_for_testing`
+
+EXPECTED_RESPONSE="
+1f9be8d2262152abbf9c595fe8651ce9
+49f0edf87144e8aef8fcf43753cbd7a2497998b2
+82022c87bb14169295b5b13688404f013f4c39011c204ae358bff579
+77c307a66057925a284f6fe6346b5a89bd11e93be3a39e0da43b37fdf05d61d6
+40aa6fb476e83ac0a82aac3484da942a5fa417bdf376f115298cfd28b9d0093cd282fa678d8549f3624108c0a27fb7bb
+f9e6aa9514902a0362c64c9849b41bab1525d4d1732e8807de8a380015996eb6ab57e5a613845add6524f4cdd2dc5c9b8ac86343c1977eb8ae2fe150b8697771"
+
+echo "*****************************"
+echo "$HTTP_RESPONSE"
+echo "*****************************"
+echo "$EXPECTED_RESPONSE"
+echo "*****************************"
+
+if [[ "$HTTP_RESPONSE" == *"$EXPECTED_RESPONSE" ]]
+then
+    echo "TEST PASSED!"
+    exit 0
+else
+    echo "*** TEST FAILED!"
+    exit 1
+fi'''
+      }
+    }
+    stage('Clean-up') {
+      steps {
+        sh 'kill %1'
       }
     }
   }
