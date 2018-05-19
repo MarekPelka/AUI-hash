@@ -79,6 +79,20 @@ kill %1'''
     }
     stage('Clean-up') {
       steps {
+        sh 'go test -cover -coverprofile=c.out'
+        sh 'go tool cover -html=c.out -o coverage.html'
+      }
+      publishHTML (target: [
+            allowMissing: false,
+            alwaysLinkToLastBuild: false,
+            keepAll: true,
+            reportDir: '.',
+            reportFiles: 'coverage.html',
+            reportName: "Coverage Report"
+          ])
+    }
+    stage('Clean-up') {
+      steps {
         sh 'rm auiHash'
       }
     }
