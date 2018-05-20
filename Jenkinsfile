@@ -52,6 +52,7 @@ pipeline {
       steps {
         sh 'ls'
         sh 'ls -al /go/src/AUI-hash**/*.xml'
+        sh 'cat sha512.xml'
         junit '/go/src/AUI-hash**/*.xml'
       }
     }
