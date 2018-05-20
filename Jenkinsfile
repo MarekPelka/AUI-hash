@@ -10,7 +10,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o auiHash .'
+        //sh 'CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o auiHash .'
         sh 'go get github.com/tebeka/go2xunit'
       }
     }
