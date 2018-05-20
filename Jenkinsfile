@@ -97,6 +97,6 @@ kill %1'''
     }
   }
   environment {
-    GOPATH = '/go/src/AUI-hash/f'
+    GOPATH = '/go'
   }
 }
