@@ -11,39 +11,40 @@ pipeline {
     stage('Setup') {
       steps {
         sh 'go get github.com/tebeka/go2xunit'
+        sh 'mkdir tests/'
       }
     }
     stage('Unit tests') {
       parallel {
         stage('MD5') {
           steps {
-            sh 'go test -run MD5 -v | go2xunit -output TEST-md5.xml;'
+            sh 'go test -run MD5 -v | go2xunit -output tests/TEST-md5.xml;'
             sh 'ls'
           }
         }
         stage('SHA1') {
           steps {
-            sh 'go test -run SHA1 -v | go2xunit -output TEST-sha1.xml;'
+            sh 'go test -run SHA1 -v | go2xunit -output tests/TEST-sha1.xml;'
           }
         }
         stage('SHA224') {
           steps {
-            sh 'go test -run SHA224 -v | go2xunit -output TEST-sha224.xml;'
+            sh 'go test -run SHA224 -v | go2xunit -output tests/TEST-sha224.xml;'
           }
         }
         stage('SHA256') {
           steps {
-            sh 'go test -run SHA256 -v | go2xunit -output TEST-sha256.xml;'
+            sh 'go test -run SHA256 -v | go2xunit -output tests/TEST-sha256.xml;'
           }
         }
         stage('SHA384') {
           steps {
-            sh 'go test -run SHA384 -v | go2xunit -output TEST-sha384.xml;'
+            sh 'go test -run SHA384 -v | go2xunit -output tests/TEST-sha384.xml;'
           }
         }
         stage('SHA512') {
           steps {
-            sh 'go test -run SHA512 -v | go2xunit -output TEST-sha512.xml;'
+            sh 'go test -run SHA512 -v | go2xunit -output tests/TEST-sha512.xml;'
           }
         }
       }
@@ -51,10 +52,10 @@ pipeline {
     stage('Archive JUnit results') {
       steps {
         sh 'ls'
-        sh 'cat TEST-sha512.xml'
+        sh 'cat tests/TEST-sha512.xml'
         sh 'chmod 777 *.xml'
-        sh 'ls -al /go/src/AUI-hash**/*.xml'
-        junit '/go/src/AUI-hash**/*.xml'
+        sh 'ls -al /go/src/AUI-hash/**/*.xml'
+        junit '/go/src/AUI-hash/**/*.xml'
 
       }
     }
