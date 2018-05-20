@@ -50,7 +50,7 @@ pipeline {
     }
     stage('Archive JUnit results') {
       steps {
-        junit '/go/**/*.xml'
+        // junit '/go/src/AUI-hash/**/*.xml'
       }
     }
     stage('Integration tests') {
