@@ -11,38 +11,39 @@ pipeline {
     stage('Build') {
       steps {
         sh 'CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o auiHash .'
+        sh 'go get github.com/tebeka/go2xunit'
       }
     }
     stage('Unit tests') {
       parallel {
         stage('MD5') {
           steps {
-            sh 'go test -run MD5'
+            sh 'go test -run MD5 -v | go2xu^Ct -output md5.xml'
           }
         }
         stage('SHA1') {
           steps {
-            sh 'go test -run SHA1'
+            sh 'go test -run SHA1 -v | go2xu^Ct -output sha1.xml'
           }
         }
         stage('SHA224') {
           steps {
-            sh 'go test -run SHA224'
+            sh 'go test -run SHA224 -v | go2xu^Ct -output sha224.xml'
           }
         }
         stage('SHA256') {
           steps {
-            sh 'go test -run SHA256'
+            sh 'go test -run SHA256 -v | go2xu^Ct -output sha256.xml'
           }
         }
         stage('SHA384') {
           steps {
-            sh 'go test -run SHA384'
+            sh 'go test -run SHA384 -v | go2xu^Ct -output sha384.xml'
           }
         }
         stage('SHA512') {
           steps {
-            sh 'go test -run SHA512'
+            sh 'go test -run SHA512 -v | go2xu^Ct -output sha512.xml'
           }
         }
       }
@@ -88,12 +89,18 @@ kill %1'''
       steps {
         sh 'go test -cover -coverprofile=c.out'
         sh 'go tool cover -html=c.out -o coverage.html'
+        publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: './', reportFiles: 'coverage.html', reportName: 'Coverage Report', reportTitles: ''])
       }
     }
     stage('Clean-up') {
       steps {
         sh 'rm auiHash'
       }
+    }
+  }
+  post {
+    always {
+      junit '/go/src/AUI-hash/**/*.xml'
     }
   }
   environment {
