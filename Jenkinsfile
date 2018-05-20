@@ -51,9 +51,7 @@ pipeline {
     stage('Archive JUnit results') {
       steps {
         sh 'ls'
-        sh """
-            cp *.xml $WORKSPACE
-        """
+        sh 'ls /go/src/AUI-hash**/*.xml'
         junit '/go/src/AUI-hash**/*.xml'
       }
     }
