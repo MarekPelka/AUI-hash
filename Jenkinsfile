@@ -51,10 +51,10 @@ pipeline {
     stage('Archive JUnit results') {
       steps {
         sh 'ls'
-        sh 'ls -al /go/src/AUI-hash**/*.xml'
         sh 'cat sha512.xml'
         sh 'chmod 777 *.xml'
-        junit '/go/src/AUI-hash**/*.xml'
+        sh 'ls -al /go/src/AUI-hash**/*.xml'
+        junit '/go/src/AUI-hash/sha512.xml'
       }
     }
     stage('Integration tests') {
