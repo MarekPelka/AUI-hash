@@ -18,32 +18,38 @@ pipeline {
       parallel {
         stage('MD5') {
           steps {
-            sh 'go test -run MD5 -v | go2xunit -output md5.xml'
+            sh 'go test -run MD5 -v > md5.txt'
+            sh 'go2xunit -input md5.txt -output md5.xml'
           }
         }
         stage('SHA1') {
           steps {
-            sh 'go test -run SHA1 -v | go2xunit -output sha1.xml'
+            sh 'go test -run SHA1 -v > md5.txt'
+            sh 'go2xunit -input md5.txt -output sha1.xml'
           }
         }
         stage('SHA224') {
           steps {
-            sh 'go test -run SHA224 -v | go2xunit -output sha224.xml'
+            sh 'go test -run SHA224 -v > sha224.txt'
+            sh 'go2xunit -input sha224.txt -output sha224.xml'
           }
         }
         stage('SHA256') {
           steps {
-            sh 'go test -run SHA256 -v | go2xunit -output sha256.xml'
+            sh 'go test -run SHA256 -v > sha256.txt'
+            sh 'go2xunit -input sha256.txt -output sha256.xml'
           }
         }
         stage('SHA384') {
           steps {
-            sh 'go test -run SHA384 -v | go2xunit -output sha384.xml'
+            sh 'go test -run SHA384 -v > sha384.txt'
+            sh 'go2xunit -input sha384.txt -output sha384.xml'
           }
         }
         stage('SHA512') {
           steps {
-            sh 'go test -run SHA512 -v | go2xunit -output sha512.xml'
+            sh 'go test -run SHA512 -v > sha512.txt'
+            sh 'go2xunit -input sha512.txt -output sha512.xml'
           }
         }
       }
