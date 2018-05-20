@@ -3,6 +3,7 @@ pipeline {
     dockerfile {
       filename 'Dockerfile'
       additionalBuildArgs '--target builder'
+      customWorkspace '/go/src/AUI-hash/'
     }
 
   }
@@ -96,6 +97,6 @@ kill %1'''
     }
   }
   environment {
-    GOPATH = '${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}'
+    GOPATH = '/go/src/AUI-hash/f'
   }
 }
