@@ -48,11 +48,11 @@ pipeline {
         }
       }
     }
-    stage('Archive JUnit results') {
-      steps {
+    //stage('Archive JUnit results') {
+    //  steps {
         // junit '/go/src/AUI-hash/**/*.xml'
-      }
-    }
+    //  }
+    //}
     stage('Integration tests') {
       steps {
         sh '''#/bin/bash
