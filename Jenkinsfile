@@ -8,9 +8,8 @@ pipeline {
 
   }
   stages {
-    stage('Build') {
+    stage('Setup') {
       steps {
-        sh 'CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o auiHash .'
         sh 'go get github.com/tebeka/go2xunit'
       }
     }
@@ -19,6 +18,7 @@ pipeline {
         stage('MD5') {
           steps {
             sh 'go test -run MD5 -v | go2xunit -output md5.xml;'
+            sh 'ls'
           }
         }
         stage('SHA1') {
@@ -50,7 +50,8 @@ pipeline {
     }
     stage('Archive JUnit results') {
       steps {
-        junit '/go/**/*.xml'
+      sh 'ls'
+        junit '/go/src/AUI-hash**/*.xml'
       }
     }
     stage('Integration tests') {
