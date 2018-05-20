@@ -57,13 +57,13 @@ func sha512Handler(w http.ResponseWriter, r *http.Request) {
 
 func allHandler(w http.ResponseWriter, r *http.Request) {
 	wordTohash := []byte(r.URL.Path[len(ALLUrl):])
-	m5 := encode(md5.Sum(wordTohash)[:])
-	s1 := encode(sha1.Sum(wordTohash)[:])
-	s224 := encode(sha256.Sum224(wordTohash)[:])
-	s256 := encode(sha256.Sum256(wordTohash)[:])
-	s384 := encode(sha512.Sum384(wordTohash)[:])
-	s512 := encode(sha512.Sum512(wordTohash)[:])
-	fmt.Fprintf(w, "%s\n%s\n%s\n%s\n%s\n%s\n", m5, s1, s224, s256, s384, s512)
+	m5 := md5.Sum(wordTohash)
+	s1 := sha1.Sum(wordTohash)
+	s224 := sha256.Sum224(wordTohash)
+	s256 := sha256.Sum256(wordTohash)
+	s384 := sha512.Sum384(wordTohash)
+	s512 := sha512.Sum512(wordTohash)
+	fmt.Fprintf(w, "%s\n%s\n%s\n%s\n%s\n%s\n", encode(m5[:]), encode(s1[:]), encode(s224[:]), encode(s256[:]), encode(s384[:]), encode(s512[:]))
 }
 
 func main() {
