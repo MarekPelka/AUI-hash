@@ -9,7 +9,6 @@ import (
 type urlHashHandler func(w http.ResponseWriter, r *http.Request)
 
 var (
-
 	TEST_STRING = "String_for_testing"
 	MD5_RESPONSE = "1f9be8d2262152abbf9c595fe8651ce9"
 	SHA1_RESPONSE = "49f0edf87144e8aef8fcf43753cbd7a2497998b2"
@@ -25,21 +24,16 @@ func HttpWraper(t *testing.T, function urlHashHandler, url string, response stri
 		t.Fatal(err)
 	}
 
-	// We create a ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
 	rr := httptest.NewRecorder()
 	handler := http.HandlerFunc(function)
 
-	// Our handlers satisfy http.Handler, so we can call their ServeHTTP method
-	// directly and pass in our Request and ResponseRecorder.
 	handler.ServeHTTP(rr, req)
 
-	// Check the status code is what we expect.
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v",
 			status, http.StatusOK)
 	}
 
-	// Check the response body is what we expect.
 	expected := response
 	if rr.Body.String() != expected {
 		t.Errorf("handler returned unexpected body: got %v want %v",
