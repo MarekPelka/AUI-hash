@@ -81,21 +81,24 @@ kill %1'''
       steps {
         sh 'go test -cover -coverprofile=c.out'
         sh 'go tool cover -html=c.out -o coverage.html'
-        publishHTML (target: [
-            allowMissing: false,
-            alwaysLinkToLastBuild: false,
-            keepAll: true,
-            reportTitles: '',
-            reportDir: '.',
-            reportFiles: 'coverage.html',
-            reportName: "Coverage Report"
-         ])
+        publishHTML([
+                      allowMissing: false,
+                      alwaysLinkToLastBuild: false,
+                      keepAll: true,
+                      reportTitles: '',
+                      reportDir: '.',
+                      reportFiles: 'coverage.html',
+                      reportName: "Coverage Report"
+                   ])
+        }
+      }
+      stage('Clean-up') {
+        steps {
+          sh 'rm auiHash'
+        }
       }
     }
-    stage('Clean-up') {
-      steps {
-        sh 'rm auiHash'
-      }
+    environment {
+      GOPATH = '${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}'
     }
   }
-}
