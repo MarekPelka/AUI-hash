@@ -54,6 +54,11 @@ pipeline {
         }
       }
     }
+    stage('Archive JUnit results') {
+          steps {
+            junit '/go/**/*.xml'
+          }
+        }
     stage('Integration tests') {
       steps {
         sh '''#/bin/bash
@@ -102,11 +107,6 @@ kill %1'''
       steps {
         sh 'rm auiHash'
       }
-    }
-  }
-  post {
-    always {
-      junit '/go/src/AUI-hash/**/*.xml'
     }
   }
   environment {
