@@ -54,7 +54,7 @@ pipeline {
         sh 'cat TEST-sha512.xml'
         sh 'chmod 777 *.xml'
         sh 'ls -al /go/src/AUI-hash**/*.xml'
-        step([$class: 'JUnitResultArchiver', testResults: '/go/src/AUI-hash**/*.xml'])
+        junit '/go/src/AUI-hash**/*.xml'
 
       }
     }
