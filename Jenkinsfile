@@ -85,6 +85,7 @@ kill %1'''
             allowMissing: false,
             alwaysLinkToLastBuild: false,
             keepAll: true,
+            reportTitles: '',
             reportDir: '.',
             reportFiles: 'coverage.html',
             reportName: "Coverage Report"
