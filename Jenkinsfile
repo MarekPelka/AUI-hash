@@ -23,10 +23,10 @@ pipeline {
     stage('Archive JUnit results') {
       steps {
         sh 'ls'
-        sh 'cat tests/TEST-sha512.xml'
-        sh 'chmod 777 tests/*.xml'
-        sh 'ls -al /go/src/AUI-hash/**/*.xml'
-        junit '/go/src/AUI-hash/**/*.xml'
+        // sh 'cat tests/TEST-sha512.xml'
+        // sh 'chmod 777 tests/*.xml'
+        // sh 'ls -al /go/src/AUI-hash/**/*.xml'
+        // junit '/go/src/AUI-hash/**/*.xml'
 
       }
     }
