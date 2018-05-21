@@ -15,38 +15,9 @@ pipeline {
       }
     }
     stage('Unit tests') {
-      parallel {
-        stage('MD5') {
-          steps {
-            sh 'go test -run MD5 -v | go2xunit -output tests/TEST-md5.xml;'
-            sh 'ls'
-          }
-        }
-        stage('SHA1') {
-          steps {
-            sh 'go test -run SHA1 -v | go2xunit -output tests/TEST-sha1.xml;'
-          }
-        }
-        stage('SHA224') {
-          steps {
-            sh 'go test -run SHA224 -v | go2xunit -output tests/TEST-sha224.xml;'
-          }
-        }
-        stage('SHA256') {
-          steps {
-            sh 'go test -run SHA256 -v | go2xunit -output tests/TEST-sha256.xml;'
-          }
-        }
-        stage('SHA384') {
-          steps {
-            sh 'go test -run SHA384 -v | go2xunit -output tests/TEST-sha384.xml;'
-          }
-        }
-        stage('SHA512') {
-          steps {
-            sh 'go test -run SHA512 -v | go2xunit -output tests/TEST-sha512.xml;'
-          }
-        }
+      steps {
+        sh 'go test -v | go2xunit -output tests/TEST-md5.xml;'
+        sh 'ls'
       }
     }
     stage('Archive JUnit results') {
