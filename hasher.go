@@ -27,32 +27,32 @@ func encode(b []byte) string {
 
 func md5Handler(w http.ResponseWriter, r *http.Request) {
 	h := md5.Sum([]byte(r.URL.Path[len(MD5Url):]))
-	fmt.Fprintf(w, "%s", encode(h[:]))
+	writeResponseByte(w, h[:])
 }
 
 func sha1Handler(w http.ResponseWriter, r *http.Request) {
 	h := sha1.Sum([]byte(r.URL.Path[len(SHA1Url):]))
-	fmt.Fprintf(w, "%s", encode(h[:]))
+	writeResponseByte(w, h[:])
 }
 
 func sha224Handler(w http.ResponseWriter, r *http.Request) {
 	h := sha256.Sum224([]byte(r.URL.Path[len(SHA224Url):]))
-	fmt.Fprintf(w, "%s", encode(h[:]))
+	writeResponseByte(w, h[:])
 }
 
 func sha256Handler(w http.ResponseWriter, r *http.Request) {
 	h := sha256.Sum256([]byte(r.URL.Path[len(SHA256Url):]))
-	fmt.Fprintf(w, "%s", encode(h[:]))
+	writeResponseByte(w, h[:])
 }
 
 func sha384Handler(w http.ResponseWriter, r *http.Request) {
 	h := sha512.Sum384([]byte(r.URL.Path[len(SHA384Url):]))
-	fmt.Fprintf(w, "%s", encode(h[:]))
+	writeResponseByte(w, h[:])
 }
 
 func sha512Handler(w http.ResponseWriter, r *http.Request) {
 	h := sha512.Sum512([]byte(r.URL.Path[len(SHA512Url):]))
-	fmt.Fprintf(w, "%s", encode(h[:]))
+	writeResponseByte(w, h[:])
 }
 
 func allHandler(w http.ResponseWriter, r *http.Request) {
@@ -63,7 +63,23 @@ func allHandler(w http.ResponseWriter, r *http.Request) {
 	s256 := sha256.Sum256(wordTohash)
 	s384 := sha512.Sum384(wordTohash)
 	s512 := sha512.Sum512(wordTohash)
-	fmt.Fprintf(w, "%s\n%s\n%s\n%s\n%s\n%s\n", encode(m5[:]), encode(s1[:]), encode(s224[:]), encode(s256[:]), encode(s384[:]), encode(s512[:]))
+	var hashList []string
+	hashList = append(hashList, encode(m5[:]), encode(s1[:]), encode(s224[:]), encode(s256[:]), encode(s384[:]), encode(s512[:]))
+	writeResponse(w, hashList)
+}
+
+func writeResponseByte(w http.ResponseWriter, hash []byte) {
+	writeResponse(w, []string{encode(hash)})
+}
+
+func writeResponse(w http.ResponseWriter, hashList []string) {
+	response := hashList[0]
+	for _, line := range hashList[1:] {
+		response = response + "\n" + line
+	}
+
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	fmt.Fprintf(w, "%s", response)
 }
 
 func main() {

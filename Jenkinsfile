@@ -8,51 +8,29 @@ pipeline {
 
   }
   stages {
-    stage('Build') {
+    stage('Setup') {
       steps {
         sh 'CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o auiHash .'
         sh 'go get github.com/tebeka/go2xunit'
+        sh 'mkdir tests/'
       }
     }
     stage('Unit tests') {
-      parallel {
-        stage('MD5') {
-          steps {
-            sh 'go test -run MD5 -v | go2xunit -output md5.xml;'
-          }
-        }
-        stage('SHA1') {
-          steps {
-            sh 'go test -run SHA1 -v | go2xunit -output sha1.xml;'
-          }
-        }
-        stage('SHA224') {
-          steps {
-            sh 'go test -run SHA224 -v | go2xunit -output sha224.xml;'
-          }
-        }
-        stage('SHA256') {
-          steps {
-            sh 'go test -run SHA256 -v | go2xunit -output sha256.xml;'
-          }
-        }
-        stage('SHA384') {
-          steps {
-            sh 'go test -run SHA384 -v | go2xunit -output sha384.xml;'
-          }
-        }
-        stage('SHA512') {
-          steps {
-            sh 'go test -run SHA512 -v | go2xunit -output sha512.xml;'
-          }
-        }
+      steps {
+        sh 'go test -v | go2xunit -output tests/TEST-md5.xml;'
+        sh 'ls'
       }
     }
-    //stage('Archive JUnit results') {
-    //  steps {
+    stage('Archive JUnit results') {
+      steps {
+        sh 'ls'
+        // sh 'cat tests/TEST-sha512.xml'
+        // sh 'chmod 777 tests/*.xml'
+        // sh 'ls -al /go/src/AUI-hash/**/*.xml'
         // junit '/go/src/AUI-hash/**/*.xml'
-    //  }
-    //}
+
+      }
+    }
     stage('Integration tests') {
       steps {
         sh '''#/bin/bash
